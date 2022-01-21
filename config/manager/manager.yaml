@@ -56,5 +56,5 @@ spec:
           requests:
             cpu: 10m
             memory: 64Mi
-      serviceAccountName: pagerduty-operator
+      serviceAccountName: controller-manager
       terminationGracePeriodSeconds: 10
