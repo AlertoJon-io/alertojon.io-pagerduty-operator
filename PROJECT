@@ -1,0 +1,16 @@
+domain: alertojon.io
+layout:
+- go.kubebuilder.io/v3
+projectName: pagerduty-operator
+repo: alertojon.io/pagerduty-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: alertojon.io
+  group: alertprovider
+  kind: User
+  path: alertojon.io/pagerduty-operator/api/v1
+  version: v1
+version: "3"
