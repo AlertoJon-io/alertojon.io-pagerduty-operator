@@ -17,14 +17,16 @@ limitations under the License.
 package controllers
 
 import (
+	alertproviderv1 "alertojon.io/pagerduty-operator/api/v1"
 	"context"
+	"errors"
 	"fmt"
+	"github.com/PagerDuty/go-pagerduty"
 	"k8s.io/apimachinery/pkg/runtime"
+	"os"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-
-	alertproviderv1 "alertojon.io/pagerduty-operator/api/v1"
 )
 
 // UserReconciler reconciles a User object
@@ -59,6 +61,34 @@ func (r *UserReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.
 	// fmt print user object
 	fmt.Printf("The user spec ==== %+v\n", user.Spec)
 
+	pagerdutyAuthToken := os.Getenv("PAGERDUTY_API_KEY")
+
+	if pagerdutyAuthToken == "" {
+		return ctrl.Result{}, errors.New("PAGERDUTY_API_KEY is not set")
+	}
+
+	pagerDutyClient := pagerduty.NewClient(pagerdutyAuthToken)
+
+	userResponse, pagerdutyErr := pagerDutyClient.CreateUser(pagerduty.User{
+		Name:  user.Spec.FirstName + " " + user.Spec.LastName,
+		Email: user.Spec.Email,
+		Role:  "user",
+	})
+	if pagerdutyErr != nil {
+		var aerr pagerduty.APIError
+
+		if errors.As(err, &aerr) {
+			if aerr.RateLimited() {
+				fmt.Println("rate limited")
+				return ctrl.Result{}, client.IgnoreNotFound(err)
+			}
+
+			fmt.Println("unknown status code:", aerr.StatusCode)
+
+			return ctrl.Result{}, client.IgnoreNotFound(err)
+		}
+	}
+	fmt.Printf("Pagerduty response ==== %+v\n", userResponse)
 	return ctrl.Result{}, nil
 }
 
