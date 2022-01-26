@@ -20,8 +20,8 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            registry.digitalocean.com/alertojon-io/pagerduty-operator
-            alertojon/pagerduty-operator
+            registry.digitalocean.com/alertojon-io/pagerduty-provider
+            alertojon/pagerduty-provider
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
