@@ -32,7 +32,7 @@ jobs:
             type=semver,pattern={{major}}
             type=sha
           labels: |
-            io.artifacthub.package.readme-url=https://raw.githubusercontent.com/AlertoJon-io/alertojon.io-pagerduty-operator/develop/README.md?token=GHSAT0AAAAAABQQ6WUOESBNMGAQQJ3IGKIGYPR4FUQ
+            io.artifacthub.package.readme-url=https://raw.githubusercontent.com/AlertoJon-io/alertojon.io-pagerduty-operator/main/README.md
 
       - name: Login to digital ocean
         uses: docker/login-action@v1
