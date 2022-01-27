@@ -1,0 +1,10 @@
+apiVersion: alertprovider.alertojon.io/v1
+kind: User
+metadata:
+  name: user-sample
+spec:
+  email: "pickjonathan@gmail.com"
+  firstName: "Jonathan"
+  lastName: "Pick"
+  phoneNumber: "+972-504-414-412"
+
